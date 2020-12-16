@@ -71,7 +71,7 @@ def options():
     return parser.parse_args()
 
 def splitComma(data):
-    return [x.strip() for x in options.sAttribs.split(',')]
+    return [x.strip() for x in data.split(',')]
 
 if __name__ == "__main__":
     options, remainder = options()
@@ -103,16 +103,22 @@ if __name__ == "__main__":
 
         print(dn)
 
-        for sAttrib in sAttribs:
+        #we iterate through the attributes as an indexed array so that we can match the source and destination attributes (that can differ) by index
+        i = 0
+        ldAttribs = splitComma(options.dAttribs)
+        lsAttribs = splitComma(options.sAttribs)
+
+        for sAttrib in lsAttribs:
             #if source attr doesn't exist in target attr than add it
-            if not dn in dstData or not sAttrib in dstData[dn]: 
-                print("add: %s\n%s: %s\n-" % (sAttrib, sAttrib, sAttribs[sAttrib]))
+            if not dn in dstData or not ldAttribs[i] in dstData[dn]: 
+                print("add: %s\n%s: %s\n-" % (ldAttribs[i], ldAttribs[i], sAttribs[sAttrib]))
                 if not options.simMode:
-                    dest.modify_s(dn, [(ldap.MOD_ADD, sAttrib, sAttribs[sAttrib])] )
+                    dest.modify_s(dn, [(ldap.MOD_ADD, ldAttribs[i], sAttribs[sAttrib])] )
 
             #if source attr exists in target attr and replace is true, than update it otherwise do nothing 
-            elif dstData[dn][sAttrib] != sAttribs[sAttrib] and options.replace:
-                print("replace: %s\n%s: %s\n-" % (sAttrib, sAttrib, sAttribs[sAttrib]))
+            elif dstData[dn][ldAttribs[i]] != sAttribs[sAttrib] and options.replace:
+                print("replace: %s\n%s: %s\n-" % (ldAttribs[i], ldAttribs[i], sAttribs[sAttrib]))
                 if not options.simMode:
-                    dest.modify_s(dn, [(ldap.MOD_REPLACE, sAttrib, sAttribs[sAttrib])])
+                    dest.modify_s(dn, [(ldap.MOD_REPLACE, ldAttribs[i], sAttribs[sAttrib])])
+            i+=1
         print()

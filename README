@@ -1,3 +1,5 @@
+STARTING THE SCRIPT
+
 ldap_enrich takes certain specified attributes from one object and copies them to another objects
 
 Options:
@@ -19,8 +21,19 @@ Options:
   -r, --replace        replace destination attributes when they differ between source and dest, default is false
   -t, --simulate       Only print output do not update
 
+ATTRIBUTE ONE TO ONE MAPPING
+The source attribute list matches one to one the destination attribute list.
+This allows you to copy a source attribute value to a destination attribute with a different name.
+For example:
+-sAttribs='loginShell, uid'
+-dAttribs='loginShell, description'
 
-Dependencies for Ubuntu 20 or (WSL2 Ubuntu 20)
+Would copy the source value in loginShell to the attribute loginShell in the destination,
+And coies the uid value from the source object to the description field.
+NOTE: THEREFORE THERE ARE ALWAYS THE SAME AMOUNT OF ATTRIBUTES IN THE SOURCE AND DESTINATION
+
+
+DEPENDENCIES TO INSTALL 
 
 sudo apt-get install libsasl2-dev python-dev libldap2-dev libssl-dev
 sudo pip install python-ldap
