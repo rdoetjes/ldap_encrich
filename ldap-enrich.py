@@ -100,8 +100,7 @@ if __name__ == "__main__":
     
     #loop through the dst objects and update if required
     for dn in dstData:
-
-        print(dn)
+        ldif = ""    
 
         #we iterate through the attributes as an indexed array so that we can match the source and destination attributes (that can differ) by index
         i = 0
@@ -111,14 +110,16 @@ if __name__ == "__main__":
         for sAttrib in lsAttribs:
             #if source attr doesn't exist in target attr than add it
             if not dn in dstData or not ldAttribs[i] in dstData[dn]: 
-                print("add: %s\n%s: %s\n-" % (ldAttribs[i], ldAttribs[i], sAttribs[sAttrib]))
+                ldif += "add: %s\n%s: %s\n-\n" % (ldAttribs[i], ldAttribs[i], ("%s" % sAttribs[sAttrib]))
                 if not options.simMode:
                     dest.modify_s(dn, [(ldap.MOD_ADD, ldAttribs[i], sAttribs[sAttrib])] )
 
             #if source attr exists in target attr and replace is true, than update it otherwise do nothing 
             elif dstData[dn][ldAttribs[i]] != sAttribs[sAttrib] and options.replace:
-                print("replace: %s\n%s: %s\n-" % (ldAttribs[i], ldAttribs[i], sAttribs[sAttrib]))
+                ldif += "replace: %s\n%s: %s\n-\n" % (ldAttribs[i], ldAttribs[i], sAttribs[sAttrib])
                 if not options.simMode:
                     dest.modify_s(dn, [(ldap.MOD_REPLACE, ldAttribs[i], sAttribs[sAttrib])])
             i+=1
-        print()
+
+        if len(ldif) > 0:
+             print("dn: %s\nchangetype: modify\n%s" % (dn, ldif))
