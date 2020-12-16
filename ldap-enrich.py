@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python2
 
 #This program selects a single source object, from which the attribues sAttributes are copied over to the found destination objects
 #When replace option is False then existing destination attributes are not updated

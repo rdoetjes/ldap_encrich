@@ -11,6 +11,5 @@
         --dBaseDN="ou=dest,ou=users,dc=phonax" \
 		--dAttribs="loginShell, description" \
 		--dFilter="(&(objectClass=posixAccount)(cn=*))" \
-        --replace \
-        --simulate
-
+        --simulate \
+        #--replace
