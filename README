@@ -19,9 +19,11 @@ Options:
   --dAttribs=DATTRIBS  comma seperated attributes to be copied (matching 1 to
                        1 with sAttrib)
   -r, --replace        replace destination attributes when they differ between source and dest, default is false
-  -t, --simulate       Only print output do not update
+  -t, --simulate       Only print output the unencoded LDIF output, for inspection and will not update the directory
+
 
 ATTRIBUTE ONE TO ONE MAPPING
+
 The source attribute list matches one to one the destination attribute list.
 This allows you to copy a source attribute value to a destination attribute with a different name.
 For example:
