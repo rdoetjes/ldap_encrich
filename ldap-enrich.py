@@ -110,15 +110,16 @@ if __name__ == "__main__":
         for sAttrib in lsAttribs:
             #if source attr doesn't exist in target attr than add it
             if not dn in dstData or not ldAttribs[i] in dstData[dn]: 
-                ldif += "add: %s\n%s: %s\n-\n" % (ldAttribs[i], ldAttribs[i], ("%s" % sAttribs[sAttrib]))
+                ldif += "add: %s\n%s: %s\n-\n" % (ldAttribs[i], ldAttribs[i], sAttribs[sAttrib][0])
                 if not options.simMode:
-                    dest.modify_s(dn, [(ldap.MOD_ADD, ldAttribs[i], sAttribs[sAttrib])] )
+                    dest.modify_s(dn, [(ldap.MOD_ADD, ldAttribs[i], sAttribs[sAttrib][0])] )
 
             #if source attr exists in target attr and replace is true, than update it otherwise do nothing 
             elif dstData[dn][ldAttribs[i]] != sAttribs[sAttrib] and options.replace:
-                ldif += "replace: %s\n%s: %s\n-\n" % (ldAttribs[i], ldAttribs[i], sAttribs[sAttrib])
+                    
+                ldif += "replace: %s\n%s: %s\n-\n" % (ldAttribs[i], ldAttribs[i], sAttribs[sAttrib][0])
                 if not options.simMode:
-                    dest.modify_s(dn, [(ldap.MOD_REPLACE, ldAttribs[i], sAttribs[sAttrib])])
+                    dest.modify_s(dn, [(ldap.MOD_REPLACE, ldAttribs[i], sAttribs[sAttrib][0])])
             i+=1
 
         if len(ldif) > 0:
