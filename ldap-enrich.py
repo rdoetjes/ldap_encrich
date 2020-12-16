@@ -38,7 +38,7 @@ def pagedSearch(connect, basedn, filter, attribs):
 
     while True:
         rtype, rdata, rmsgid, serverctrls = connect.result3(response)
-        print("a")
+    
         for r in rdata:
           result[r[0]] = r[1]
 
@@ -53,7 +53,6 @@ def pagedSearch(connect, basedn, filter, attribs):
 
         page_control.cookie = controls[0].cookie
         response = connect.search_ext(basedn, ldap.SCOPE_SUBTREE, filter, attribs, serverctrls=[page_control])
-        print("bb")
     return result
 
 #Parse the options
