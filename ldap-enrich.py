@@ -26,7 +26,8 @@ def connectLdap(url, binddn, password):
         print("LDAP error: %s -- executution halted" % e)
         sys.exit(2)
 
-# Do searches until we run out of "pages" to get from the LDAP server.
+#Do searches until we run out of "pages" to get from the LDAP server.
+#We will return a hash that has the dn as a key and second has for attributes (key) and their value
 def pagedSearch(connect, basedn, filter, attribs):
     page_control = ldap.controls.libldap.SimplePagedResultsControl(True, size=1000, cookie='')
     response = connect.search_ext(basedn, ldap.SCOPE_SUBTREE, filter, attribs, serverctrls=[page_control])
