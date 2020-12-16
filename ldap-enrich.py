@@ -11,7 +11,7 @@ import six
 
 #LDAP connection wrapper
 def connectLdap(url, binddn, password):
-    try:
+    try:    
         ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
         l = ldap.initialize(url)
         l.set_option(ldap.OPT_REFERRALS ,0)
@@ -29,25 +29,31 @@ def connectLdap(url, binddn, password):
 #Do searches until we run out of "pages" to get from the LDAP server.
 #We will return a hash that has the dn as a key and second has for attributes (key) and their value
 def pagedSearch(connect, basedn, filter, attribs):
-    page_control = ldap.controls.libldap.SimplePagedResultsControl(True, size=1000, cookie='')
-    response = connect.search_ext(basedn, ldap.SCOPE_SUBTREE, filter, attribs, serverctrls=[page_control])
-    result = {}
-    pages = 0
-    while True:
-        pages += 1
-        rtype, rdata, rmsgid, serverctrls = connect.result3(response)
 
+    page_control = ldap.controls.libldap.SimplePagedResultsControl(False, size=1000, cookie='')
+
+    response = connect.search_ext(basedn, ldap.SCOPE_SUBTREE, filter, attribs, serverctrls=[page_control])
+
+    result = {}
+
+    while True:
+        rtype, rdata, rmsgid, serverctrls = connect.result3(response)
+        print("a")
         for r in rdata:
           result[r[0]] = r[1]
 
-        controls = [control for control in serverctrls if control.controlType == ldap.controls.libldap.SimplePagedResultsControl.controlType]
+        controls = [c for c in serverctrls if c.controlType == ldap.controls.libldap.SimplePagedResultsControl.controlType]
+
         if not controls:
             print('The server ignores RFC 2696 control')
             break
+
         if not controls[0].cookie:
             break
+
         page_control.cookie = controls[0].cookie
-        response = connect.search_ext(basdn, ldap.SCOPE_SUBTREE, filter, attribs, serverctrls=[page_control])
+        response = connect.search_ext(basedn, ldap.SCOPE_SUBTREE, filter, attribs, serverctrls=[page_control])
+        print("bb")
     return result
 
 #Parse the options
