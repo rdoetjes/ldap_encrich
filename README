@@ -1,4 +1,27 @@
-Dependencies for Ubuntu 20 (WSL2 Ubuntu)
+ldap_enrich takes certain specified attributes from one object and copies them to another objects
+
+Options:
+  -h, --help           show this help message and exit
+  --sLdap=SOURCE       LDAP url of source
+  --sBind=SOURCEBIND   source bind
+  --sPass=SOURCEPASS   source password
+  --sBaseDN=SBASEDN    source password
+  --sAttribs=SATTRIBS  comma seperated attributes to copy
+  --sFilter=SFILTER    source filter which objects to select
+  --dLdap=DEST         LDAP url of destination
+  --dBind=DESTBIND     dest bind
+  --dPass=DESTPASS     dest password
+  --dBaseDN=DBASEDN    source password
+  --dFilter=DFILTER    destination filter which objects to get receive the
+                       attributes
+  --dAttribs=DATTRIBS  comma seperated attributes to be copied (matching 1 to
+                       1 with sAttrib)
+  -r, --replace        replace destination attributes when they differ between source and dest, default is false
+  -t, --simulate       Only print output do not update
+
+
+Dependencies for Ubuntu 20 or (WSL2 Ubuntu 20)
 
 sudo apt-get install libsasl2-dev python-dev libldap2-dev libssl-dev
 sudo pip install python-ldap
+

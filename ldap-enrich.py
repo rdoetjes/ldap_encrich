@@ -65,7 +65,7 @@ def options():
     parser.add_option("--dFilter", dest="dFilter", help="destination filter which objects to get receive the attributes")
     parser.add_option("--dAttribs", dest="dAttribs", help="comma seperated attributes to be copied (matching 1 to 1 with sAttrib)") 
 
-    parser.add_option("-r", "--replace", action="store_true", dest="replace", help="replacer destination attributes, default is false", default=False) 
+    parser.add_option("-r", "--replace", action="store_true", dest="replace", help="replace destination attributes when they differ between source and dest, default is false", default=False) 
     parser.add_option("-t", "--simulate", action="store_true", dest="simMode", help="Only print output do not update", default=False) 
 
     return parser.parse_args()
