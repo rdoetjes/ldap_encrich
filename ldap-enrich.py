@@ -79,6 +79,7 @@ def splitComma(data):
 if __name__ == "__main__":
     options, remainder = options()
 
+    #Exceptuions are handled in the connectLdap for briefness, when something goes wrong it will exit the program
     source = connectLdap(options.source, options.sourceBind, options.sourcePass)
     dest = connectLdap(options.dest, options.destBind, options.destPass)
 
