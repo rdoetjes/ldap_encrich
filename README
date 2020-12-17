@@ -26,12 +26,12 @@ ATTRIBUTE ONE TO ONE MAPPING
 
 The source attribute list matches one to one the destination attribute list.
 This allows you to copy a source attribute value to a destination attribute with a different name.
+
 For example:
 -sAttribs='loginShell, uid'
 -dAttribs='loginShell, description'
-
 Would copy the source value in loginShell to the attribute loginShell in the destination,
-And coies the uid value from the source object to the description field.
+And copies the uid value from the source object to the destimation object's description field.
 NOTE: THEREFORE THERE ARE ALWAYS THE SAME AMOUNT OF ATTRIBUTES IN THE SOURCE AND DESTINATION
 
 
