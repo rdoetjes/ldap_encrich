@@ -2,6 +2,26 @@ FUNCTIONALITY
 
 This script enriches objects in a target directory with the object attribute values from a source directory
 
+EXAMPLE USE CASE
+You have one user object (cn=user1) that has all the generic attributes filled, and you want to copy those to all matching
+users.
+
+./ldap-enrich.py  --sLdap="ldap://127.0.0.1/" \
+           --sBind="cn=admin,dc=phonax" \
+           --sPass="Phonax01" \
+           --sBaseDN="ou=source,ou=users,dc=phonax" \
+           --sAttribs="loginShell, description, postalCode, street" \
+           --sFilter="(&(objectClass=posixAccount)(cn=user1))" \
+           --dLdap=ldap://127.0.0.1 \
+           --dBind="cn=admin,dc=phonax" \
+           --dPass="Phonax01" \
+           --dBaseDN="ou=dest,ou=users,dc=phonax" \
+           --dAttribs="loginShell, description, postalCode, street" \
+           --dFilter="(&(objectClass=posixAccount)(cn=*))" \
+           --simulate \
+           --replace \ #this force an override when the attribute already exists in the target
+
+
 STARTING THE SCRIPT
 
 ldap_enrich takes certain specified attributes from one object and copies them to another objects
