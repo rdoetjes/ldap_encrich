@@ -1,3 +1,7 @@
+FUNCTIONALITY
+
+This script enriches objects in a target directory with the object attribute values from a source directory
+
 STARTING THE SCRIPT
 
 ldap_enrich takes certain specified attributes from one object and copies them to another objects
