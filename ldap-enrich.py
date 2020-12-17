@@ -56,8 +56,7 @@ def pagedSearch(connect, basedn, filter, attribs):
     return result
 
 #Parse the options
-def options():
-    parser = OptionParser()
+def options(parser):
     parser.add_option("--sLdap", dest="source", help="LDAP url of source")
     parser.add_option("--sBind", dest="sourceBind", help="source bind")
     parser.add_option("--sPass", dest="sourcePass", help="source password")
@@ -75,14 +74,19 @@ def options():
     parser.add_option("-r", "--replace", action="store_true", dest="replace", help="replace destination attributes when they differ between source and dest, default is false", default=False) 
     parser.add_option("-t", "--simulate", action="store_true", dest="simMode", help="Only print output the unencoded LDIF output, for inspection and will not update the directory", default=False) 
 
-    return parser.parse_args()
 
 #Split a comma seperated string into an array and strip leading and trailing spaces
 def splitComma(data):
     return [x.strip() for x in data.split(',')]
 
 if __name__ == "__main__":
-    options, remainder = options()
+    parser = OptionParser()
+    options(parser)
+    if len(sys.argv[1:]) == 0:
+        print "no argument given!"
+        parser.print_help()
+        sys.exit(2)
+    options, remainder = parser.parse_args()
 
     #Exceptuions are handled in the connectLdap for briefness, when something goes wrong it will exit the program
     source = connectLdap(options.source, options.sourceBind, options.sourcePass)
@@ -121,14 +125,13 @@ if __name__ == "__main__":
 
         for sAttrib in lsAttribs:
             #if source attr doesn't exist in target attr then add it
-            if not dn in dstData or not ldAttribs[i] in dstData[dn]: 
+            if lsAttribs[i] in sAttribs and (not dn in dstData or not ldAttribs[i] in dstData[dn]): 
                 ldif += "add: %s\n%s: %s\n-\n" % (ldAttribs[i], ldAttribs[i], sAttribs[sAttrib][0])
                 if not options.simMode:
                     dest.modify_s(dn, [(ldap.MOD_ADD, ldAttribs[i], sAttribs[sAttrib][0])] )
 
             #if source attr exists in target attr and replace is true, then update it otherwise do nothing 
-            elif dstData[dn][ldAttribs[i]] != sAttribs[sAttrib] and options.replace:
-                    
+            elif lsAttribs[i] in sAttribs and dstData[dn][ldAttribs[i]] != sAttribs[sAttrib] and options.replace:
                 ldif += "replace: %s\n%s: %s\n-\n" % (ldAttribs[i], ldAttribs[i], sAttribs[sAttrib][0])
                 if not options.simMode:
                     dest.modify_s(dn, [(ldap.MOD_REPLACE, ldAttribs[i], sAttribs[sAttrib][0])])

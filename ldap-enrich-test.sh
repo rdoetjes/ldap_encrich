@@ -12,5 +12,5 @@
 		--dAttribs="loginShell, description" \
 		--dFilter="(&(objectClass=posixAccount)(cn=*))" \
         --simulate \
-        #--replace \
+        --replace \
 
