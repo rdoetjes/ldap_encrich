@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-./ldap-enrich.py  --sLdap="ldap://127.0.0.1/" \
+ ./ldap-one-to-many.py --sLdap="ldap://127.0.0.1/" \
 		--sBind="cn=admin,dc=phonax" \
 		--sPass="Phonax01" \
         --sBaseDN="ou=source,ou=users,dc=phonax" \
@@ -12,5 +12,5 @@
 		--dAttribs="loginShell, description" \
 		--dFilter="(&(objectClass=posixAccount)(cn=*))" \
         --simulate \
-        --replace \
+        #--replace \
 
